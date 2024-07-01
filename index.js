@@ -19,6 +19,6 @@ app.use(router);
 // database connection
 db();
 
-app.listen(port, () => {
+app.listen(process.env.PORT, () => {
   console.log(`server is running  port ${port}`);
 });
