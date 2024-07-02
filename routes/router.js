@@ -98,12 +98,45 @@ router.get("/admin/blog/:id", async (req, res) => {
 });
 
 // update the blog from the admin component
+// router.put("/admin/blog/:id", async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const { title, summary, category, description } = req.body;
+
+//     const updatePost = await blogPost.findByIdAndUpdate(
+//       id,
+//       {
+//         title,
+//         summary,
+//         category,
+//         description,
+//       },
+//       { new: true }
+//     );
+
+//     if (!updatePost) {
+//       return res.status(404).send({ error: "Blog post not found" });
+//     }
+
+//     res.status(200).send({ message: "Post updated", updatedPost: updatePost });
+//   } catch (error) {
+//     console.error("Error updating blog post:", error);
+//     res.status(500).send({ error: "Error updating blog post" });
+//   }
+// });
 router.put("/admin/blog/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { title, summary, category, description } = req.body;
 
-    const updatePost = await blogPost.findByIdAndUpdate(
+    // Check if the blog post exists
+    const existingPost = await blogPost.findById(id);
+    if (!existingPost) {
+      return res.status(404).send({ error: "Blog post not found" });
+    }
+
+    // Update the blog post
+    const updatedPost = await blogPost.findByIdAndUpdate(
       id,
       {
         title,
@@ -114,17 +147,12 @@ router.put("/admin/blog/:id", async (req, res) => {
       { new: true }
     );
 
-    if (!updatePost) {
-      return res.status(404).send({ error: "Blog post not found" });
-    }
-
-    res.status(200).send({ message: "Post updated", updatedPost: updatePost });
+    res.status(200).send({ message: "Post updated", updatedPost });
   } catch (error) {
     console.error("Error updating blog post:", error);
     res.status(500).send({ error: "Error updating blog post" });
   }
 });
-
 // this is the api list all the blog at categry component
 router.get("/singlepost/:id", async (req, res) => {
   try {
