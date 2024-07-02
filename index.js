@@ -8,15 +8,8 @@ const app = express();
 dotenv.config();
 const port = process.env.PORT || 5000;
 
-// app.use(cors())
-app.use(
-  cors({
-    origin: "https://my-blog-backend-0s7a.onrender.com",
-    methods: ["GET", "POST", "UPDATE", "DELETE"],
-    allowedHeaders: ["Content-Type"],
-    credentials: true,
-  })
-);
+app.use(cors())
+
 
 // parse json
 app.use(express.json());
